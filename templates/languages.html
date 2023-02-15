@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header>
+<a href = '/'> Home </a> / <a href = '/countries-list'> Countries </a> / <a href = '/languages'> Languages </a>
+</header>
+
+<h2>Languages list:</h2>
+<ul>
+  {% for l in lang %}
+  <li>{{ l }}</li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

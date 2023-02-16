@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http import HttpResponseNotFound
 import json
+from MainApp.models import Country
 
 def home(request):
     context = {
@@ -11,8 +12,9 @@ def home(request):
 
 
 def countries_list(request):
-    with open('countries.json') as f:
-        cn = json.load(f)
+#    with open('countries.json') as f:
+#        cn = json.load(f)
+    cn = Country.objects.all()
     context = {
         "cnts": cn
     }

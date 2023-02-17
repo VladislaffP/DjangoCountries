@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base_count.html' %}
 
-<header>
-<a href = '/'> Home </a> / <a href = '/countries-list'> Countries </a> / <a href = '/languages'> Languages </a>
-</header>
+{% block style %}
+{{ block.super }}
+        h2{
+            color:blue
+            }
+{% endblock %}
 
-<h2>Country: {{ name }}</h2>
+{% block content %}
+<h2>Country: {{ country.country }}</h2>
 <ul>Languages:
-  {% for l in lang %}
-  <li>{{ l }}</li>
+  {% for l in country.languages.all %}
+  <li>{{ l.language }}</li>
   {% endfor %}
 </ul>
-
-<!--Languages: {{ lang }}-->
+{% endblock %}
 
 </body>
 </html>

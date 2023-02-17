@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Countries-List</title>
-</head>
-<body>
+{% extends 'base_count.html' %}
 
-<header>
-<a href = '/'> Home </a> / <a href = '/countries-list'> Countries </a> / <a href = '/languages'> Languages </a>
-</header>
+{% block style %}
+{{ block.super }}
+        ol{
+            color:teal
+            }
+{% endblock %}
 
+{% block content %}
 <h1>Список стран</h1>
 
 <ol>
   {% for cnt in cnts %}
-  <li><a href = 'country/{{ cnt.country }}'>{{ cnt.country }}</a></li>
+  <li><a href = "{% url 'country' cnt.country %}">{{ cnt.country }}</a></li>
   {% endfor %}
 </ol>
+{% endblock %}
+
+
 
 </body>
 </html>

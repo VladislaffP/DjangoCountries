@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse
 from django.http import HttpResponseNotFound
 import json
 from MainApp.models import Country
+from MainApp.models import Language
+from django.core.exceptions import ObjectDoesNotExist
 
 def home(request):
     context = {
@@ -21,13 +23,17 @@ def countries_list(request):
     return render(request, 'countries-list.html', context)
 
 def view_country(request, id):
-    with open('countries.json') as f:
-        cn = json.load(f)
-    for c in cn:
-        if c['country'] == id:
-            context = {
-                "name": c['country'],
-                "lang": c['languages']
+    try:
+        cnt = Country.objects.get(country=id)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound(f'Страны с названием {id} не существует')
+
+#    with open('countries.json') as f:
+#        cn = json.load(f)
+#    for c in cn:
+#        if c['country'] == id:
+    context = {
+                "country": cnt
             }
     return render(request, 'country.html', context)
 #    result = """
@@ -37,14 +43,15 @@ def view_country(request, id):
 #    return HttpResponse(result)
 
 def langs(request):
-    langs = []
-    with open('countries.json') as f:
-        cn = json.load(f)
-    for l1 in cn:
-        for l2 in l1['languages']:
-            if l2 not in langs:
-                langs.append(l2)
-    langs.sort()
+#    langs = []
+#    with open('countries.json') as f:
+#        cn = json.load(f)
+#    for l1 in cn:
+#        for l2 in l1['languages']:
+#            if l2 not in langs:
+#                langs.append(l2)
+#    langs.sort()
+    langs = Language.objects.all()
     context = {
         'lang': langs
     }

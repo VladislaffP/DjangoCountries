@@ -3,3 +3,5 @@
 *.pyc
 db.*
 DC
+templates/demo
+templates/Old

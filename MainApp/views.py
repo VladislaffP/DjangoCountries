@@ -42,6 +42,18 @@ def view_country(request, id):
 #    """
 #    return HttpResponse(result)
 
+def view_lang(request, id):
+    try:
+        lang = Language.objects.get(language=id)
+        cnt = lang.country_set.all()
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound(f'Языка с названием {id} не существует')
+    context = {
+                "lang": lang,
+                "cnt": cnt
+            }
+    return render(request, 'lang.html', context)
+
 def langs(request):
 #    langs = []
 #    with open('countries.json') as f:

@@ -1,0 +1,25 @@
+{% extends 'base_count.html' %}
+
+{% block style %}
+{{ block.super }}
+        h2{
+            color:Turquoise
+            }
+        ul{
+            font-family: serif;
+            font-size: 1.2em;
+            font-style: oblique
+        }
+{% endblock %}
+
+{% block content %}
+<h2>Language: {{ lang.language }}</h2>
+<ul>Countries:
+  {% for c in cnt %}
+  <li>{{ c.country }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+</body>
+</html>

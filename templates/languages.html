@@ -5,13 +5,16 @@
         h2{
             color:red
             }
+        ul{
+            color:teal
+            }
 {% endblock %}
 
 {% block content %}
 <h2>Languages list:</h2>
 <ul>
   {% for l in lang %}
-  <li>{{ l.language }}</li>
+  <li><a href = "{% url 'lang_detail' l.language %}">{{ l.language }}</li>
   {% endfor %}
 </ul>
 {% endblock %}

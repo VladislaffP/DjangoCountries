@@ -4,6 +4,8 @@ import json
 from MainApp.models import Country
 from MainApp.models import Language
 from django.core.exceptions import ObjectDoesNotExist
+import string
+from django.core.paginator import Paginator
 
 def home(request):
     context = {
@@ -16,9 +18,38 @@ def home(request):
 def countries_list(request):
 #    with open('countries.json') as f:
 #        cn = json.load(f)
-    cn = Country.objects.all()
+    letters = string.ascii_uppercase;
+    rq = request.GET
+    lt = rq.get("start_letter");
+    cn = Country.objects.all().order_by("country")
+
+    letter_param = ''
+
+    if lt:
+    #    print(lt)
+        cn = cn.filter(country__startswith=lt)
+        letter_param = 'start_letter=' + lt + '&'
+
+    #print(rq.get("start_letter"))
+    paginator = Paginator(cn, 10)
+    #print(paginator.object_list)
+    page_number = rq.get('page')
+    if not page_number:
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+    page_content = page_obj.object_list
+
+    nums = list(range(1, paginator.num_pages+1))
+    start_num = (int(page_number) - 1) * 10 + 1;
     context = {
-        "cnts": cn
+        "cnts": cn,
+        "letters": letters,
+        'page': page_content,
+        'total_pages': paginator.num_pages,
+        'current_page': page_obj.number,
+        'nums': nums,
+        'letter_param': letter_param,
+        'start_num': start_num
     }
     return render(request, 'countries-list.html', context)
 

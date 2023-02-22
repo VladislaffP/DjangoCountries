@@ -5,19 +5,55 @@
         ol{
             color:teal
             }
+        .complex_list {
+            padding: 4px;
+            }
+
+        ul.complex_list {
+            display: flex;
+            }
+
+        .complex_list li {
+            font-family: serif;
+            font-size: 1.5em;
+            list-style: none;
+        }
+
+        .complex_list li a {
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .complex_list li a:hover {
+            text-decoration: underline;
+        }
 {% endblock %}
 
 {% block content %}
 <h1>Список стран</h1>
+<h3>Страны начинающиеся с: </h3>
+<div class="alphabet-small">
+    <ul class="complex_list">
+        <li><a href="{% url 'countries-list' %}">ALL</a></li>
+          {% for l in letters %}
+            <li><a href = "{% url 'countries-list' %}?start_letter={{ l }}">{{ l }}</a></li>
+          {% endfor %}
+    </ul>
+</div>
 
-<ol>
-  {% for cnt in cnts %}
+<ol start={{ start_num }}>
+  {% for cnt in page %}
   <li><a href = "{% url 'country' cnt.country %}">{{ cnt.country }}</a></li>
   {% endfor %}
 </ol>
+
+<h4>Page: {{ current_page }} of {{ total_pages }}</h4>
+    <ul class="complex_list">
+          {% for num in nums %}
+            <li><a href = "{% url 'countries-list' %}?{{ letter_param }}page={{ num }}">{{ num }}</a></li>
+          {% endfor %}
+    </ul>
 {% endblock %}
-
-
 
 </body>
 </html>

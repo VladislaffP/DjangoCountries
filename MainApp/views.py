@@ -18,7 +18,8 @@ def home(request):
 def countries_list(request):
 #    with open('countries.json') as f:
 #        cn = json.load(f)
-    letters = string.ascii_uppercase;
+    letters = string.ascii_uppercase; # TODO: А точка с запятой то зачем?-)
+    # TODO: очень плохое именование переменных. rq, lt, cn - что это за кодировки?
     rq = request.GET
     lt = rq.get("start_letter");
     cn = Country.objects.all().order_by("country")
@@ -74,6 +75,7 @@ def view_country(request, id):
 #    return HttpResponse(result)
 
 def view_lang(request, id):
+    # TODO: по прежнему крайне плохое именование переменных. Вы в переменной id, храните НАЗВАНИЕ страны!
     try:
         lang = Language.objects.get(language=id)
         cnt = lang.country_set.all()

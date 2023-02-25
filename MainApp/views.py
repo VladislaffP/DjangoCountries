@@ -18,72 +18,65 @@ def home(request):
 def countries_list(request):
 #    with open('countries.json') as f:
 #        cn = json.load(f)
-    letters = string.ascii_uppercase; # TODO: А точка с запятой то зачем?-)
-    # TODO: очень плохое именование переменных. rq, lt, cn - что это за кодировки?
-    rq = request.GET
-    lt = rq.get("start_letter");
-    cn = Country.objects.all().order_by("country")
+    letters = string.ascii_uppercase
+    request_full = request.GET
+    start_letter = request_full.get("start_letter");
+    filtered_countries = Country.objects.all().order_by("country")
 
     letter_param = ''
 
-    if lt:
+    if start_letter:
     #    print(lt)
-        cn = cn.filter(country__startswith=lt)
-        letter_param = 'start_letter=' + lt + '&'
+        filtered_countries = filtered_countries.filter(country__startswith=start_letter)
+        letter_param = 'start_letter=' + start_letter + '&'
 
     #print(rq.get("start_letter"))
-    paginator = Paginator(cn, 10)
+    paginator = Paginator(filtered_countries, 10)
     #print(paginator.object_list)
-    page_number = rq.get('page')
+    page_number = request_full.get('page')
     if not page_number:
         page_number = 1
     page_obj = paginator.get_page(page_number)
     page_content = page_obj.object_list
 
-    nums = list(range(1, paginator.num_pages+1))
+    nums_list = list(range(1, paginator.num_pages+1))
     start_num = (int(page_number) - 1) * 10 + 1;
     context = {
-        "cnts": cn,
+        #"cnts": cn,
         "letters": letters,
-        'page': page_content,
+        'page_content': page_content,
         'total_pages': paginator.num_pages,
         'current_page': page_obj.number,
-        'nums': nums,
+        'nums_list': nums_list,
         'letter_param': letter_param,
         'start_num': start_num
     }
     return render(request, 'countries-list.html', context)
 
-def view_country(request, id):
+def view_country(request, country_name):
     try:
-        cnt = Country.objects.get(country=id)
+        current_country = Country.objects.get(country=country_name)
     except ObjectDoesNotExist:
-        return HttpResponseNotFound(f'Страны с названием {id} не существует')
+        return HttpResponseNotFound(f'Страны с названием {country_name} не существует')
 
 #    with open('countries.json') as f:
 #        cn = json.load(f)
 #    for c in cn:
 #        if c['country'] == id:
     context = {
-                "country": cnt
+                "country": current_country
             }
     return render(request, 'country.html', context)
-#    result = """
-#    <h1>"Проект DjangoCountries"</h1>
-#    <strong>Исполнитель</strong>: <i>Паницкий В.В.</i>
-#    """
-#    return HttpResponse(result)
 
-def view_lang(request, id):
-    # TODO: по прежнему крайне плохое именование переменных. Вы в переменной id, храните НАЗВАНИЕ страны!
+def view_lang(request, language_name):
     try:
-        lang = Language.objects.get(language=id)
-        cnt = lang.country_set.all()
+        current_language = Language.objects.get(language=language_name)
+        language_countries_list = current_language.country_set.all()
     except ObjectDoesNotExist:
-        return HttpResponseNotFound(f'Языка с названием {id} не существует')
+        return HttpResponseNotFound(f'Языка с названием {language_name} не существует')
     context = {
-                "lang": lang,
-                "cnt": cnt
+                "current_language": current_language,
+                "language_countries_list": language_countries_list
             }
     return render(request, 'lang.html', context)
 
@@ -96,9 +89,9 @@ def langs(request):
 #            if l2 not in langs:
 #                langs.append(l2)
 #    langs.sort()
-    langs = Language.objects.all()
+    languages_list = Language.objects.all()
     context = {
-        'lang': langs
+        'languages_list': languages_list
     }
     return render(request, 'languages.html', context)
 

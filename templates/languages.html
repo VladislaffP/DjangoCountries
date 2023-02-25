@@ -13,11 +13,9 @@
 {% block content %}
 <h2>Languages list:</h2>
 <ul>
-  {% for l in lang %}
+  {% for l in languages_list %}
   <li><a href = "{% url 'lang_detail' l.language %}">{{ l.language }}</li>
   {% endfor %}
 </ul>
 {% endblock %}
 
-</body>
-</html>

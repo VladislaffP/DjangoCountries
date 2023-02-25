@@ -13,13 +13,11 @@
 {% endblock %}
 
 {% block content %}
-<h2>Language: {{ lang.language }}</h2>
+<h2>Language: {{ current_language.language }}</h2>
 <ul>Countries:
-  {% for c in cnt %}
+  {% for c in language_countries_list %}
   <li>{{ c.country }}</li>
   {% endfor %}
 </ul>
 {% endblock %}
 
-</body>
-</html>

@@ -42,18 +42,16 @@
 </div>
 
 <ol start={{ start_num }}>
-  {% for cnt in page %}
+  {% for cnt in page_content %}
   <li><a href = "{% url 'country' cnt.country %}">{{ cnt.country }}</a></li>
   {% endfor %}
 </ol>
 
 <h4>Page: {{ current_page }} of {{ total_pages }}</h4>
     <ul class="complex_list">
-          {% for num in nums %}
+          {% for num in nums_list %}
             <li><a href = "{% url 'countries-list' %}?{{ letter_param }}page={{ num }}">{{ num }}</a></li>
           {% endfor %}
     </ul>
 {% endblock %}
 
-</body>
-</html>
